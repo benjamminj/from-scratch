@@ -27,9 +27,19 @@
   },
   "prettier": {
     "printWidth": 80,
-    "semi": true,
+    "semi": false,
     "singleQuote": true,
     "trailingComma": "es5"
+  },
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "diagnostics": {
+
+          "warnOnly": true
+        }
+      }
+    }
   },
   "name": "from-scratch",
   "author": "benjamin.d.johnson@icloud.com",
