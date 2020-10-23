@@ -31,12 +31,12 @@ export const debounce = <Fn extends (...args: any[]) => any>(
 
     // store the timeout
     timeout = window.setTimeout(() => {
-      fn(...storedArguments as Parameters<Fn>)
+      fn(...(storedArguments as Parameters<Fn>))
     }, wait)
 
     if (maxWait !== undefined && maxWaitTimeout === undefined) {
       maxWaitTimeout = window.setTimeout(() => {
-        fn(...storedArguments as Parameters<Fn>)
+        fn(...(storedArguments as Parameters<Fn>))
       }, maxWait)
     }
   }
@@ -51,7 +51,7 @@ export const debounce = <Fn extends (...args: any[]) => any>(
     // clear all of the timeouts
     window.clearTimeout(maxWaitTimeout)
     window.clearTimeout(timeout)
-    fn(...storedArguments as Parameters<Fn>)
+    fn(...(storedArguments as Parameters<Fn>))
   }
 
   return debouncedFn

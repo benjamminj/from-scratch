@@ -88,7 +88,7 @@ test('should only invoke the function 1x after `maxWait` times out', () => {
   jest.advanceTimersByTime(9)
   debounced(3, 4)
   jest.advanceTimersByTime(5)
-  
+
   jest.advanceTimersByTime(6)
 })
 
@@ -114,7 +114,6 @@ test('should cancel any `maxWait` timers when `cancel` is called', () => {
   expect(mock).toBeCalledTimes(0)
 })
 
-
 test('should run any pending invocations when `flush` is called', () => {
   const mock = jest.fn()
   const debounced = debounce(mock, 10)
@@ -127,4 +126,3 @@ test('should run any pending invocations when `flush` is called', () => {
 })
 
 test.todo('`flush` should respect the `leading` flag')
-
