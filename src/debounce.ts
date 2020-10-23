@@ -3,8 +3,6 @@ type DebounceOptions = {
   maxWait?: number
 }
 
-// stretch goal:
-// - flush method
 export const debounce = <Fn extends (...args: any[]) => any>(
   fn: Fn,
   wait = 0,
@@ -16,6 +14,25 @@ export const debounce = <Fn extends (...args: any[]) => any>(
   let storedArguments: Parameters<Fn> | undefined = undefined
   let maxWaitTimeout: SetTimeoutId = undefined
 
+  const clearTimeouts = () => {
+    window.clearTimeout(maxWaitTimeout)
+    window.clearTimeout(timeout)
+  }
+
+  const invokeFunction = () => {
+    // Since we're dealing with timers and timeouts, it's possible that this
+    // can get run 2x in close succession. If the stored argument state has
+    // been cleared by another run of the function, do nothing.
+    if (!storedArguments) return
+
+    fn(...storedArguments)
+
+    // reset the state inside of the closure before the next function call.
+    storedArguments = undefined
+    timeout = undefined
+    maxWaitTimeout = undefined
+  }
+
   const debouncedFn = (...args: Parameters<Fn>) => {
     // if there's no stored arguments, we need to store them
     // if leading !== true, we need to update the arguments
@@ -23,35 +40,24 @@ export const debounce = <Fn extends (...args: any[]) => any>(
       storedArguments = args
     }
 
-    // on each run, check whether a timeout has been stored
-    // if yes, clear it
     if (timeout !== undefined) {
       window.clearTimeout(timeout)
     }
 
     // store the timeout
-    timeout = window.setTimeout(() => {
-      fn(...(storedArguments as Parameters<Fn>))
-    }, wait)
+    timeout = window.setTimeout(invokeFunction, wait)
 
     if (maxWait !== undefined && maxWaitTimeout === undefined) {
-      maxWaitTimeout = window.setTimeout(() => {
-        fn(...(storedArguments as Parameters<Fn>))
-      }, maxWait)
+      maxWaitTimeout = window.setTimeout(invokeFunction, maxWait)
     }
   }
 
-  debouncedFn.cancel = () => {
-    // clear all of the timeouts
-    window.clearTimeout(maxWaitTimeout)
-    window.clearTimeout(timeout)
-  }
+  debouncedFn.cancel = clearTimeouts
 
   debouncedFn.flush = () => {
     // clear all of the timeouts
-    window.clearTimeout(maxWaitTimeout)
-    window.clearTimeout(timeout)
-    fn(...(storedArguments as Parameters<Fn>))
+    clearTimeouts()
+    invokeFunction()
   }
 
   return debouncedFn
