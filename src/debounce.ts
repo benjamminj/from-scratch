@@ -3,6 +3,18 @@ type DebounceOptions = {
   maxWait?: number
 }
 
+/**
+ * Implementation of lodash.debounce from scratch.
+ *
+ * Returns a debounced function which will only be invoked after `wait` milliseconds
+ * have passed since the last invocation of the original function.
+ *
+ * One notable difference from lodash.debounce is that the `trailing`
+ * option is _not_ supported by this function. By default the debounced
+ * function will be invoked with the last set of arguments (`trailing` behavior).
+ *
+ * @see https://lodash.com/docs/4.17.15#debounce
+ */
 export const debounce = <Fn extends (...args: any[]) => any>(
   fn: Fn,
   wait = 0,
