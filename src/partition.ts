@@ -1,13 +1,15 @@
 import { matchesProperty } from './matchesProperty'
+import { property } from './property'
 
 type PredicateFunction<T> = (value: T) => boolean
 type PredicateArray = [string, unknown]
+type PredicateString = string
 
-type Predicate<T> = PredicateFunction<T> | PredicateArray
+type Predicate<T> = PredicateFunction<T> | PredicateArray | PredicateString
 
 const determinePredicateFunction = <T>(predicate: Predicate<T>) => {
   if (Array.isArray(predicate)) return matchesProperty(...predicate)
-
+  if (typeof predicate === 'string') return property(predicate)
   return predicate
 }
 

@@ -37,3 +37,25 @@ test('should allow "matchesProperty" shorthand for 2nd argument', () => {
     { id: '5', value: 8 },
   ])
 })
+
+test('should allow "property" shorthand for 2nd argument', () => {
+  const array = [
+    { id: '1', value: false },
+    { id: '2', value: true },
+    { id: '3', value: false },
+    { id: '4', value: true },
+    { id: '5', value: false },
+  ]
+
+  const [truthy, falsy] = partition(array, 'value')
+  expect(truthy).toEqual([
+    { id: '2', value: true },
+    { id: '4', value: true },
+  ])
+
+  expect(falsy).toEqual([
+    { id: '1', value: false },
+    { id: '3', value: false },
+    { id: '5', value: false },
+  ])
+})
