@@ -43,3 +43,14 @@ test('should allow accessing array indexes', () => {
   const value = get(obj, 'a.b[1].value')
   expect(value).toEqual(2)
 })
+
+test('should allow array syntax for paths', () => {
+  const obj = {
+    a: {
+      b: [{ value: 1 }, { value: 2 }, { value: 3 }],
+    },
+  }
+
+  const value = get(obj, ['a', 'b', '1', 'value'])
+  expect(value).toEqual(2)
+})

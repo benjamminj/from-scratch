@@ -1,10 +1,16 @@
+const getPathSegments = (path: string | string[]) => {
+  if (Array.isArray(path)) return path
+
+  // split the path at every "."
+  return path.split(/[\[\]\.]/).filter(x => x)
+}
+
 export const get = (
   obj: object,
-  path: string,
+  path: string | string[],
   defaultValue: unknown = undefined
 ) => {
-  // split the path at every "."
-  const pathSegments = path.split(/[\[\]\.]/).filter(x => x)
+  const pathSegments = getPathSegments(path)
   let value
 
   try {
@@ -12,7 +18,7 @@ export const get = (
       const key = pathSegments[i]
 
       if (i === 0) {
-        value = obj[key]
+        value = (obj as any)[key]
         continue
       }
 
