@@ -14,3 +14,26 @@ test('should split an object into a "true" group and a "false" group', () => {
   expect(over5).toEqual([5, 6, 9])
   expect(under5).toEqual([1, 3, 2])
 })
+
+test('should allow "matchesProperty" shorthand for 2nd argument', () => {
+  const array = [
+    { id: '1', value: 4 },
+    { id: '2', value: 5 },
+    { id: '3', value: 4 },
+    { id: '4', value: 6 },
+    { id: '5', value: 8 },
+  ]
+
+  const [is4, isNot4] = partition(array, ['value', 4])
+
+  expect(is4).toEqual([
+    { id: '1', value: 4 },
+    { id: '3', value: 4 },
+  ])
+
+  expect(isNot4).toEqual([
+    { id: '2', value: 5 },
+    { id: '4', value: 6 },
+    { id: '5', value: 8 },
+  ])
+})

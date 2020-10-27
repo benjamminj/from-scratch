@@ -1,7 +1,11 @@
-export const matchesProperty = <T extends object>(
-  path: string,
-  srcValue: unknown
-) => (obj: T): boolean => {
-  const value = obj[path as keyof T]
-  return value === srcValue
+export const matchesProperty = (path: string, srcValue: unknown) => (
+  src: unknown
+): boolean => {
+  if (src !== null && typeof src === 'object') {
+    const srcObject = src as { [key: string]: unknown }
+    const value = srcObject[path]
+    return value === srcValue
+  }
+
+  return false
 }
