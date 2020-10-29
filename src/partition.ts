@@ -1,15 +1,22 @@
+import { matches } from './matches'
 import { matchesProperty } from './matchesProperty'
 import { property } from './property'
 
 type PredicateFunction<T> = (value: T) => boolean
 type PredicateArray = [string, unknown]
 type PredicateString = string
+type PredicateObject = { [key: string]: unknown }
 
-type Predicate<T> = PredicateFunction<T> | PredicateArray | PredicateString
+type Predicate<T> =
+  | PredicateFunction<T>
+  | PredicateArray
+  | PredicateString
+  | PredicateObject
 
 const determinePredicateFunction = <T>(predicate: Predicate<T>) => {
   if (Array.isArray(predicate)) return matchesProperty(...predicate)
   if (typeof predicate === 'string') return property(predicate)
+  if (typeof predicate === 'object') return matches(predicate)
   return predicate
 }
 
