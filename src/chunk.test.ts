@@ -15,6 +15,11 @@ test("if the array can't be split evenly, the last array should contain the rest
     [7, 8],
   ])
 })
+
 test('should default to a chunk size of 1', () => {
   expect(chunk([1, 2, 3, 4, 5, 6])).toEqual([[1], [2], [3], [4], [5], [6]])
+})
+
+test('should not do anything if given an empty array', () => {
+  expect(chunk([], 4)).toEqual([])
 })
