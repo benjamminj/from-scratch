@@ -20,6 +20,12 @@ const determinePredicateFunction = <T>(predicate: Predicate<T>) => {
   return predicate
 }
 
+/**
+ * Split a collection into two arrays, one of values for which `predicate` is
+ * true and a second for which `predicate` is false
+ *
+ * @see https://lodash.com/docs/4.17.15#partition
+ */
 export const partition = <T>(
   collection: T[] | { [key: string]: T },
   predicate: Predicate<T>
